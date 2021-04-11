@@ -1,6 +1,10 @@
-from flask import Flask, render_template, redirect, url_for
+import os
+import random
+from flask import Flask, render_template, redirect, url_for, send_from_directory
 from flask import request
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from werkzeug.utils import secure_filename
+
 from models import User
 import pymysql
 
@@ -26,7 +30,10 @@ def load_user(user_id):
 
 @app.route('/', methods=['GET'])
 def show():
-    return render_template('login.html')
+    if current_user.get_id() is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template('homepage.html', userid=current_user.get_id())
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -84,15 +91,54 @@ def homepage():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('show'))
+    return redirect(url_for('login'))
 
 
-@app.route('file', methods=['POST', 'GET'])
+@app.route('/file', methods=['POST', 'GET'])
 @login_required
 def file():
+    if request.method == 'GET':
+        return render_template('file.html')
+    else:
+        f = request.files['file']
+        filename = secure_filename(f.filename)
+        if os.path.exists('files'):
+            print('base folder exists')
+        else:
+            os.mkdir('files')
+        filepath = 'files/' + current_user.get_id()
+        if os.path.exists(filepath):
+            print('filepath exists')
+        else:
+            os.mkdir(filepath)
+        f.save(os.path.join(filepath, filename))
+        print(current_user.get_id())
+        cursor.execute('insert into coursefilemanagement.file(fileName, fileID, account) values (%s,%s,%s)',
+                       (filename, random.randint(1, 999999999), current_user.get_id()))
+        conn.commit()
+        return 'file uploaded successfully'
 
-    return render_template('file.html')
+
+@app.route('/download_file', methods=['POST', 'GET'])
+@login_required
+def download_file():
+    filepath = 'files/' + current_user.get_id()
+    fileID = request.form['id']
+    cursor.execute('select fileName from coursefilemanagement.file where fileID=%s', fileID)
+    filename = cursor.fetchall()
+    print(filepath)
+    print(filename[0][0])
+    return send_from_directory(filepath, filename[0][0], as_attachment=True)
+
+
+@app.route('/show_file', methods=['POST', 'GET'])
+@login_required
+def show_file():
+    cursor.execute('select * from coursefilemanagement.file')
+    file_list = cursor.fetchall()
+    print(file_list)
+    return render_template('showfile.html', file_list=file_list)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
