@@ -94,11 +94,20 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/file', methods=['POST', 'GET'])
+@app.route('/show_file', methods=['POST', 'GET'])
 @login_required
-def file():
+def show_file():
+    cursor.execute('select * from coursefilemanagement.file')
+    file_list = cursor.fetchall()
+    print(file_list)
+    return render_template('showfile.html', file_list=file_list)
+
+
+@app.route('/upload_file', methods=['POST', 'GET'])
+@login_required
+def upload_file():
     if request.method == 'GET':
-        return render_template('file.html')
+        return render_template('upload_file.html')
     else:
         f = request.files['file']
         filename = secure_filename(f.filename)
@@ -129,15 +138,6 @@ def download_file():
     print(filepath)
     print(filename[0][0])
     return send_from_directory(filepath, filename[0][0], as_attachment=True)
-
-
-@app.route('/show_file', methods=['POST', 'GET'])
-@login_required
-def show_file():
-    cursor.execute('select * from coursefilemanagement.file')
-    file_list = cursor.fetchall()
-    print(file_list)
-    return render_template('showfile.html', file_list=file_list)
 
 
 if __name__ == '__main__':
