@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件展示</title>
+</head>
+<body>
+<table border = 1>
+ {% for eachfile in file_list %}
+     <tr>
+     {% for detail in eachfile %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+<p>
+    下载文件
+</p>
+<form action="/download_file" method="POST">
+    <input type="text" name="id">
+    <button type="submit">下载</button>
+</form>
+</body>
+</html>
