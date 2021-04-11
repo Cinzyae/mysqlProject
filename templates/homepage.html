@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页面</title>
+</head>
+
+<body>
+<h1>
+    Logged in as:{{ userid }}
+</h1>
+<form action="/logout" method="get">
+    <p>
+        <button type="submit">注销</button>
+    </p>
+</form>
+<form action="/file" method="get">
+    <p>
+        <button type="submit">文件</button>
+    </p>
+</form>
+</body>
+</html>
