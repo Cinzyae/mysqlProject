@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>私信展示</title>
+</head>
+<body>
+<table border = 1>
+ {% for eachmessage in message_list %}
+     <tr>
+     {% for detail in eachmessage %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+<p>
+    发送新私信
+</p>
+<form action="/newmessage" method="post">
+    <p>
+        收信人ID
+    </p>
+    <input type="text" name="receiver">
+    <p>
+        内容
+    </p>
+    <input type="text" name="content">
+    <p>
+        <button type="submit">发送</button>
+    </p>
+</form>
+<form action="/homepage" method="GET">
+    <button type="submit">回到主页面</button>
+</form>
+</body>
+</html>

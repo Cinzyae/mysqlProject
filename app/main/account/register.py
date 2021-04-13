@@ -16,6 +16,6 @@ def register():
 
         cursor.execute('insert into coursefilemanagement.user(usertype, account, password) values (%s,%s,%s)',
                        (usertype, account, password))
-
+        # TODO : insert student or teacher
         conn.commit()
         return '<h>注册成功！请登录。</h><form action="/login" method="get"><p><button type="submit">返回登录</button></p></form>'

@@ -6,6 +6,11 @@
 </head>
 <body>
 <table border = 1>
+    <tr>
+        <th>文件名</th>
+        <th>文件ID</th>
+        <th>所有人</th>
+    </tr>
  {% for eachfile in file_list %}
      <tr>
      {% for detail in eachfile %}
@@ -23,11 +28,14 @@
     <input type="submit" value="提交"/>
 </form>
 <p>
-    下载文件
+    下载文件，输入文件ID
 </p>
 <form action="/download_file" method="POST">
     <input type="text" name="id">
     <button type="submit">下载</button>
+</form>
+<form action="/homepage" method="GET">
+    <button type="submit">回到主页面</button>
 </form>
 </body>
 </html>

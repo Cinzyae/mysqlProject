@@ -11,7 +11,7 @@ from app.main import cursor, conn, main
 @login_required
 def upload_file():
     if request.method == 'GET':
-        return render_template('upload_file.html')
+        return render_template('uploadfile.html')
     else:
         f = request.files['file']
         filename = secure_filename(f.filename)
@@ -28,5 +28,6 @@ def upload_file():
         print(current_user.get_id())
         cursor.execute('insert into coursefilemanagement.file(fileName, fileID, account) values (%s,%s,%s)',
                        (filename, random.randint(1, 999999999), current_user.get_id()))
+        # TODO : id change
         conn.commit()
-        return render_template('upload_file.html')
+        return render_template('uploadfile.html')

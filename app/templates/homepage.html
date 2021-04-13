@@ -7,7 +7,7 @@
 
 <body>
 <h1>
-    Logged in as : {{ userid }}
+    Logged in as : {{ title }} {{ userid }}
 </h1>
 <form action="/logout" method="get">
     <p>
@@ -17,6 +17,16 @@
 <form action="/show_file" method="get">
     <p>
         <button type="submit">文件管理</button>
+    </p>
+</form>
+<form action="/perinfo" method="get">
+    <p>
+        <button type="submit">个人信息</button>
+    </p>
+</form>
+<form action="/mailbox" method="get">
+    <p>
+        <button type="submit">私信</button>
     </p>
 </form>
 </body>

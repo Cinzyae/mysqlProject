@@ -970,7 +970,7 @@ SELECT|sys.sys_config
     </column>
     <column id="305" parent="285" name="fileID">
       <Position>2</Position>
-      <DataType>char(10)|0s</DataType>
+      <DataType>char(12)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="306" parent="285" name="account">
@@ -1012,7 +1012,8 @@ SELECT|sys.sys_config
     </column>
     <column id="314" parent="287" name="messageID">
       <Position>3</Position>
-      <DataType>char(10)|0s</DataType>
+      <DataType>char(12)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
     <column id="315" parent="287" name="content">
       <Position>4</Position>
@@ -1023,13 +1024,13 @@ SELECT|sys.sys_config
       <DataType>tinyint|0s</DataType>
     </column>
     <index id="317" parent="287" name="FK_MESSAGE_MESSAGE_TEACHER">
-      <ColNames>tID</ColNames>
+      <ColNames>sID
+tID</ColNames>
       <Type>btree</Type>
     </index>
     <key id="318" parent="287" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>sID
-tID</ColNames>
+      <ColNames>messageID</ColNames>
       <Primary>1</Primary>
     </key>
     <column id="319" parent="288" name="studentName">

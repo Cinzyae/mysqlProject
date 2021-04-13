@@ -7,21 +7,24 @@
 </head>
 <body>
 <form action="/register" method="post">
-    <p>用户类型
-        <label>
-            <input type="text" name="usertype">
-        </label>
+    <p>
+        用户类型
     </p>
-    <p>账号
-        <label>
-            <input type="text" name="account">
-        </label>
+    <select name="usertype">
+        <option value="1">student</option>
+        <option value="2">teacher</option>
+    </select>
+
+    <p>
+        账号
     </p>
-    <p>密码
-        <label>
-            <input type="password" name="password">
-        </label>
+    <input type="text" name="account">
+
+    <p>
+        密码
     </p>
+    <input type="password" name="password">
+
 
     <p>
         <button type="submit">注册</button>
