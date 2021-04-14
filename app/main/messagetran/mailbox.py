@@ -16,7 +16,7 @@ def mailbox():
     detail = cursor.fetchall()
     ac_type = detail[0][0]
     if ac_type == 1:
-        cursor.execute('select * '
+        cursor.execute('select tid, sid, messageid, content, direction '
                        'from coursefilemanagement.message natural join coursefilemanagement.student '
                        'where account = %s',
                        (current_user.get_id()))
@@ -24,14 +24,13 @@ def mailbox():
         print(message_list)
         return render_template('mailbox.html', message_list=message_list)
     elif ac_type == 2:
-        cursor.execute('select * '
+        cursor.execute('select tid, sid, messageid, content, direction '
                        'from coursefilemanagement.message natural join coursefilemanagement.teacher '
                        'where account = %s',
                        (current_user.get_id()))
         message_list = cursor.fetchall()
         print(message_list)
         return render_template('mailbox.html', message_list=message_list)
-    # TODO : table head
 
 
 @main.route('/newmessage', methods=['POST', 'GET'])
@@ -58,5 +57,14 @@ def newmessage():
                            (sid[0][0], receiver, messageID, content, 0))
             conn.commit()
             return 'success!'
-
-        # TODO : configure sID or tID
+        elif ac_type == 2:
+            cursor.execute('select tID '
+                           'from coursefilemanagement.teacher '
+                           'where account=%s', (current_user.get_id()))
+            tid = cursor.fetchall()
+            messageID = time.strftime("%m%d%H%M%S", time.localtime()) + str(random.randint(1, 99))
+            cursor.execute('insert into coursefilemanagement.message(sID, tID, messageID, content, direction) '
+                           'values (%s,%s,%s,%s,%s)',
+                           (receiver, tid[0][0], messageID, content, 1))
+            conn.commit()
+            return 'success!'

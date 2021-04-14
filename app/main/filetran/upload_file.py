@@ -1,5 +1,6 @@
 import os
 import random
+import time
 
 from flask import request, render_template
 from flask_login import login_required, current_user
@@ -26,8 +27,8 @@ def upload_file():
             os.mkdir(filepath)
         f.save(os.path.join(filepath, filename))
         print(current_user.get_id())
+        fileID = time.strftime("%m%d%H%M%S", time.localtime()) + str(random.randint(1, 99))
         cursor.execute('insert into coursefilemanagement.file(fileName, fileID, account) values (%s,%s,%s)',
-                       (filename, random.randint(1, 999999999), current_user.get_id()))
-        # TODO : id change
+                       (filename, fileID, current_user.get_id()))
         conn.commit()
         return render_template('uploadfile.html')

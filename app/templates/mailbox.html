@@ -5,14 +5,21 @@
     <title>私信展示</title>
 </head>
 <body>
-<table border = 1>
- {% for eachmessage in message_list %}
-     <tr>
-     {% for detail in eachmessage %}
-         <td>{{ detail }}</td>
-     {% endfor %}
-     </tr>
- {% endfor %}
+<table border=1>
+    <tr>
+        <th>教师ID</th>
+        <th>学生ID</th>
+        <th>信息号</th>
+        <th>内容</th>
+        <th>发送方向</th>
+    </tr>
+    {% for eachmessage in message_list %}
+        <tr>
+            {% for detail in eachmessage %}
+                <td>{{ detail }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
 </table>
 <p>
     发送新私信
