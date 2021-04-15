@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>个人信息展示</title>
+    <title>信息展示</title>
 </head>
 <body>
 <table border = 1>
@@ -19,11 +19,71 @@
      </tr>
  {% endfor %}
 </table>
+
+<table border = 1>
+        <tr>
+            <th>建筑名</th>
+            <th>建筑号</th>
+        </tr>
+ {% for building_detail in building_details %}
+     <tr>
+     {% for detail in building_detail %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+
+<table border = 1>
+        <tr>
+            <th>课程名</th>
+            <th>课程号</th>
+            <th>教工号</th>
+            <th>建筑号</th>
+        </tr>
+ {% for course_detail in course_details %}
+     <tr>
+     {% for detail in course_detail %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+
+<table border = 1>
+        <tr>
+            <th>专业名</th>
+            <th>专业编号</th>
+        </tr>
+ {% for major_detail in major_details %}
+     <tr>
+     {% for detail in major_detail %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+
+<table border = 1>
+        <tr>
+            <th>课程号</th>
+            <th>学号</th>
+        </tr>
+ {% for sc_detail in sc_details %}
+     <tr>
+     {% for detail in sc_detail %}
+         <td>{{ detail }}</td>
+     {% endfor %}
+     </tr>
+ {% endfor %}
+</table>
+
 <form action="/modifyinfo" method="get">
     <p>
-        <button type="submit">修改个人信息</button>
+        <button type="submit">修改信息</button>
     </p>
 </form>
+
 <form action="/homepage" method="GET">
     <button type="submit">回到主页面</button>
 </form>

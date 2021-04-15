@@ -18,10 +18,22 @@ def perinfo():
     elif current_user.utype == 2:
         cursor.execute('select * from coursefilemanagement.teacher')
         teacher_details = cursor.fetchall()
+        cursor.execute('select * from coursefilemanagement.building')
+        building_details = cursor.fetchall()
+        cursor.execute('select * from coursefilemanagement.course')
+        course_details = cursor.fetchall()
+        cursor.execute('select * from coursefilemanagement.major')
+        major_details = cursor.fetchall()
+        cursor.execute('select * from coursefilemanagement.student_course')
+        sc_details = cursor.fetchall()
+
         for teacher_detail in teacher_details:
             if teacher_detail[2] == current_user.get_id():
-                return render_template('tperinfo.html', u_detail=(teacher_detail,))
-        return render_template('tperinfo.html', u_detail=(('?', '?', '?'),))
+                return render_template('tperinfo.html', u_detail=(teacher_detail,), building_details=building_details,
+                                       course_details=course_details, major_details=major_details,
+                                       sc_details=sc_details)
+        return render_template('tperinfo.html', u_detail=(('?', '?', '?'),), building_details=building_details,
+                               course_details=course_details, major_details=major_details, sc_details=sc_details)
 
 
 @main.route('/modifyinfo', methods=['POST', 'GET'])
@@ -60,15 +72,50 @@ def tmodify():
     if request.method == 'GET':
         return render_template('tmodify.html')
     else:
-        teacherName = request.form['teacherName']
-        tID = request.form['tID']
+        try:
+            teacherName = request.form['teacherName']
+            tID = request.form['tID']
+            cursor.execute('DELETE FROM coursefilemanagement.teacher '
+                           'WHERE account =%s', (current_user.get_id()))
+            cursor.execute(
+                'insert into coursefilemanagement.teacher(teacherName, tID, account) values (%s,%s,%s)',
+                (teacherName, tID, current_user.get_id()))
+        except:
+            print('no teacher modified')
 
-        cursor.execute('DELETE FROM coursefilemanagement.teacher '
-                       'WHERE account =%s', (current_user.get_id()))
+        try:
+            buildingName = request.form['buildingName']
+            buildingID = request.form['buildingID']
+            cursor.execute('insert into coursefilemanagement.building(buildingName, buildingID) VALUES (%s,%s)',
+                           (buildingName, buildingID))
+        except:
+            print('no building modified')
 
-        cursor.execute(
-            'insert into coursefilemanagement.teacher(teacherName, tID, account) values (%s,%s,%s)',
-            (teacherName, tID, current_user.get_id()))
+        try:
+            courseName = request.form['courseName']
+            courseID = request.form['courseID']
+            tID = request.form['tID']
+            buildingID = request.form['buildingID']
+            cursor.execute('insert into coursefilemanagement.course VALUES (%s,%s,%s,%s)',
+                           (courseName, courseID, tID, buildingID))
+        except:
+            print('no course modified')
+
+        try:
+            majorName = request.form['majorName']
+            majorID = request.form['majorID']
+            cursor.execute('insert into coursefilemanagement.major VALUES (%s,%s)',
+                           (majorName, majorID))
+        except:
+            print('no major modified')
+
+        try:
+            courseID = request.form['courseID']
+            sID = request.form['sID']
+            cursor.execute('insert into coursefilemanagement.student_course VALUES (%s,%s)',
+                           (courseID, sID))
+        except:
+            print('no course_student modified')
 
         conn.commit()
         return redirect(url_for('.perinfo'))
