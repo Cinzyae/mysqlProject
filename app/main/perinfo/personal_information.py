@@ -7,11 +7,7 @@ from app.main import main, cursor, conn
 @main.route('/perinfo', methods=['POST', 'GET'])
 @login_required
 def perinfo():
-    cursor.execute('select usertype from coursefilemanagement.user '
-                   'where account=%s', (current_user.get_id()))
-    detail = cursor.fetchall()
-    ac_type = detail[0][0]
-    if ac_type == 1:
+    if current_user.utype == 1:
         cursor.execute('select * from coursefilemanagement.student')
         student_details = cursor.fetchall()
         for student_detail in student_details:
@@ -19,7 +15,7 @@ def perinfo():
                 return render_template('sperinfo.html', u_detail=(student_detail,))
         return render_template('sperinfo.html', u_detail=(('?', '?', '?', '?'),))
 
-    elif ac_type == 2:
+    elif current_user.utype == 2:
         cursor.execute('select * from coursefilemanagement.teacher')
         teacher_details = cursor.fetchall()
         for teacher_detail in teacher_details:
@@ -31,12 +27,9 @@ def perinfo():
 @main.route('/modifyinfo', methods=['POST', 'GET'])
 @login_required
 def modifyinfo():
-    cursor.execute('select usertype from coursefilemanagement.user where account=%s', (current_user.get_id()))
-    detail = cursor.fetchall()
-    ac_type = detail[0][0]
-    if ac_type == 1:
+    if current_user.utype == 1:
         return render_template('smodify.html')
-    elif ac_type == 2:
+    elif current_user.utype == 2:
         return render_template('tmodify.html')
 
 

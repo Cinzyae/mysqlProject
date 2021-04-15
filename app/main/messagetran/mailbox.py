@@ -10,12 +10,7 @@ from app.main import main, cursor, conn
 @main.route('/mailbox', methods=['POST', 'GET'])
 @login_required
 def mailbox():
-    cursor.execute('select usertype '
-                   'from coursefilemanagement.user '
-                   'where account=%s', (current_user.get_id()))
-    detail = cursor.fetchall()
-    ac_type = detail[0][0]
-    if ac_type == 1:
+    if current_user.utype == 1:
         cursor.execute('select tid, sid, messageid, content, direction '
                        'from coursefilemanagement.message natural join coursefilemanagement.student '
                        'where account = %s',
@@ -23,7 +18,7 @@ def mailbox():
         message_list = cursor.fetchall()
         print(message_list)
         return render_template('mailbox.html', message_list=message_list)
-    elif ac_type == 2:
+    elif current_user.utype == 2:
         cursor.execute('select tid, sid, messageid, content, direction '
                        'from coursefilemanagement.message natural join coursefilemanagement.teacher '
                        'where account = %s',
@@ -41,12 +36,7 @@ def newmessage():
     else:
         receiver = request.form['receiver']
         content = request.form['content']
-        cursor.execute('select usertype '
-                       'from coursefilemanagement.user '
-                       'where account=%s', (current_user.get_id()))
-        detail = cursor.fetchall()
-        ac_type = detail[0][0]
-        if ac_type == 1:
+        if current_user.utype == 1:
             cursor.execute('select sID '
                            'from coursefilemanagement.student '
                            'where account=%s', (current_user.get_id()))
@@ -57,7 +47,7 @@ def newmessage():
                            (sid[0][0], receiver, messageID, content, 0))
             conn.commit()
             return 'success!'
-        elif ac_type == 2:
+        elif current_user.utype == 2:
             cursor.execute('select tID '
                            'from coursefilemanagement.teacher '
                            'where account=%s', (current_user.get_id()))
